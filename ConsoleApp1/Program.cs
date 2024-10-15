@@ -5,6 +5,7 @@ namespace ConsoleApp1;
 
 internal class Program
 {
+
     static ConcurrentQueue<int> _queue = new ConcurrentQueue<int>();
     static void Main(string[] args)
     {
@@ -22,6 +23,10 @@ internal class Program
     {
         while (_queue.TryDequeue(out var result))
         {
+            // this is the work around, clears all thread errors before continue
+            //var x = new VbClassLibrary1.Class1();
+            //x.ClearErrors();
+
             try
             {
                 ProcessItem(result);
@@ -37,15 +42,16 @@ internal class Program
 
     private static void ProcessItem(int result)
     {
-        var x = new VbClassLibrary1.Class1();
 
+        var x = new VbClassLibrary1.Class1();
         x.Log(result);
         switch (result)
         {
             case 1:
-                x.RaiseError();
                 break;
             case 2:
+                var y = new VbClassLibrary1.Class1();
+                y.vbtrycatch();
                 break;
             case 3:
                 break;

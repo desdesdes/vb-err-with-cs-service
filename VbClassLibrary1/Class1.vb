@@ -17,10 +17,23 @@ Public Class Class1
 
     public sub vbtrycatch
         try
-            Err.Number = vbObjectError + 1117
+            RaiseError
 
         Catch ex As Exception
-            
+            throw
         End Try
     End sub
+
+        public sub ClearErrors
+            Err.Clear()
+        End sub
+
+
+       public sub onerrorresumenext
+            on error goto errHandler
+            throw new Exception("on error resume next")
+            
+        errHandler:
+            err.raise(vbObjectError + 1117, , "Delivery date cannot be in the future.")
+        End sub
 End Class
