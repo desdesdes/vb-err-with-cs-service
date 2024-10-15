@@ -14,4 +14,13 @@ Public Class Class1
         Console.WriteLine($"Log({no}) Err.Number; {Err.Number}")
         Console.WriteLine($"Log({no}) Err.GetException(); {Err.GetException()?.ToString()}")
     End Sub
+
+    public sub vbtrycatch
+        try
+            Err.Number = vbObjectError + 1117
+
+        Catch ex As Exception
+            
+        End Try
+    End sub
 End Class
