@@ -1,51 +1,46 @@
 Imports System
+Imports System.Collections.Concurrent
 
 Module Program
-    dim runme = true
+    Dim _queue = New ConcurrentQueue(Of integer)()
 
-    sub Main(args As String()) 
-        dim t = new Threading.Thread(Sub() Runner())
+
+    Sub Main(args As String())
+        _queue.Enqueue(1)
+        _queue.Enqueue(2)
+        _queue.Enqueue(3)
+
+        Dim t = New Threading.Thread(Sub() Poller())
         t.Start()
+        Console.WriteLine("Press a key to quit!")
         Console.ReadKey()
-    End sub
-
-    sub Runner
-        try
-            Runner1
-        Catch ex As Exception
-
-        End Try
-        Log(5)
-    End sub
-
-    sub Runner1
-        Log(0)
-        try
-            Log(1)
-            'RaiseError
-            SetError
-        Catch ex As Exception
-            Log(2)
-            'throw
-        finally
-            Log(3)
-        End Try
-        Log(4)
-    End sub
-
-    Sub Log(no as integer)
-        Console.WriteLine($"Log({no}) thread:{Threading.Thread.CurrentThread.ManagedThreadId}")
-        Console.WriteLine($"Log({no}) Err.Number; {Err.Number}")
-        Console.WriteLine($"Log({no}) Err.GetException(); {Err.GetException()?.ToString()}")
     End Sub
 
-    sub RaiseError
+    Sub Poller()
+        Dim result As Integer
+        While _queue.TryDequeue(result)
+            try
+                ProcessItem(result)
+            Catch e As Exception
+                Console.WriteLine($"Error processing item {result}:")
+                Console.WriteLine(e.ToString())
+            End Try
+        End While
 
-        Err.Raise(vbObjectError + 1117, , "Delivery date cannot be in the future.")
-    End sub
+    End Sub
 
-    sub SetError
+    Private Sub ProcessItem(result As Integer)
+        Dim x = New VbClassLibrary1.Class1()
+        x.Log(result)
 
-        Err.Number = vbObjectError + 1117
-    End sub
+        Select(result)
+        Case 1
+            
+        Case 2
+            dim y = new VbClassLibrary1.Class1()
+                y.vbtrycatch()
+        Case 3
+        
+        End Select
+    End Sub
 End Module
